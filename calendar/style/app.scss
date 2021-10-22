@@ -1,0 +1,330 @@
+@import "./variable.style";
+*,
+*::before,
+*::after {
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    font-family: "Quicksand", sans-serif;
+}
+
+.light {
+    background-color: $light-body;
+    .calendar {
+        box-shadow: $shadow;
+    }
+}
+
+.calendar {
+    height: max-content;
+    width: max-content;
+    background-color: $light-main;
+    border-radius: 30px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 25px;
+        font-weight: 600px;
+        color: $light-text;
+        padding: 10px;
+        &__month__picker {
+            padding: 5px 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 28px;
+            font-weight: 500;
+            &:hover {
+                background-color: $light-hover;
+            }
+        }
+        &__year__picker {
+            display: flex;
+            align-items: center;
+            &__year__change__pev__year {
+                height: 40px;
+                width: 40px;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                margin: 0 10px;
+                cursor: pointer;
+                &:hover {
+                    background-color: $light-hover;
+                }
+                pre {
+                    font-size: 30px;
+                }
+            }
+            &__year {
+                font-size: 33px;
+                font-weight: 500;
+            }
+            &__year__change__next__year {
+                height: 40px;
+                width: 40px;
+                border-radius: 50%;
+                display: grid;
+                place-items: center;
+                margin: 0 10px;
+                cursor: pointer;
+                &:hover {
+                    background-color: $light-hover;
+                }
+                pre {
+                    font-size: 30px;
+                }
+            }
+        }
+    }
+    &__body {
+        padding: 10px;
+        &__week__day {
+            display: flex;
+            grid-template-columns: repeat(7, 1fr);
+            font-size: 20px;
+            font-weight: 500;
+            height: 50px;
+            justify-content: space-around;
+            div {
+                display: grid;
+                place-items: center;
+                color: $light-second;
+                width: 52px;
+            }
+        }
+        &__days {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 2px;
+            color: $light-text;
+            div {
+                width: 50px;
+                height: 50px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 5px;
+                position: relative;
+                cursor: pointer;
+                animation: to-top 1s forwards;
+                &:hover span:nth-child(1),
+                &:hover span:nth-child(3) {
+                    height: 100%;
+                }
+                &:hover span:nth-child(2),
+                &:hover span:nth-child(4) {
+                    width: 100%;
+                }
+                span {
+                    position: absolute;
+                    &:nth-child(1),
+                    &:nth-child(3) {
+                        width: 2px;
+                        height: 0;
+                        background-color: $light-text;
+                    }
+                    &:nth-child(2),
+                    &:nth-child(4) {
+                        width: 0;
+                        height: 2px;
+                        background-color: $light-text;
+                    }
+                    &:nth-child(1) {
+                        bottom: 0;
+                        left: 0;
+                    }
+                    &:nth-child(3) {
+                        top: 0;
+                        right: 0;
+                    }
+                    &:nth-child(2) {
+                        top: 0;
+                        left: 0;
+                    }
+                    &:nth-child(4) {
+                        bottom: 0;
+                        right: 0;
+                    }
+                }
+                &:hover span {
+                    transition: width 0.2s ease-in-out, height 0.2s ease-in-out;
+                }
+            }
+            .current__date {
+                background-color: $blue;
+                color: $white;
+                border-radius: 50%;
+                span {
+                    display: none;
+                }
+            }
+        }
+    }
+    &__footer {
+        padding: 10px;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        &__toggle {
+            display: flex;
+            span {
+                margin-right: 10px;
+                color: $light-text;
+            }
+            &__dark__mode__switch {
+                position: relative;
+                width: 48px;
+                height: 25px;
+                border-radius: 14px;
+                background-color: $light-second;
+                cursor: pointer;
+                &__ident {
+                    width: 21px;
+                    height: 21px;
+                    border-radius: 50%;
+                    background-color: $light-main;
+                    position: absolute;
+                    top: 2px;
+                    left: 2px;
+                    transition: left 0.2s ease-in-out;
+                }
+            }
+        }
+    }
+    .month__list {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-color: $light-main;
+        padding: 20px;
+        color: $light-text;
+        display: grid;
+        grid-template-columns: repeat(3, auto);
+        gap: 5px;
+        transform: scale(1.9);
+        visibility: hidden;
+        pointer-events: none;
+        transition: all 0.35s ease-in-out;
+        div {
+            display: grid;
+            place-items: center;
+            div {
+                width: 100%;
+                padding: 5px 20px;
+                border-radius: 10px;
+                text-align: center;
+                cursor: pointer;
+                &:hover {
+                    background-color: $light-hover;
+                }
+            }
+        }
+    }
+    .show {
+        transform: scale(1);
+        visibility: visible;
+        pointer-events: visible;
+    }
+}
+
+.dark {
+    background-color: $dark-body;
+    .calendar {
+        background-color: $dark-main;
+        &__header {
+            color: $dark-text;
+            &__month__picker {
+                &:hover {
+                    background-color: $dark-hover;
+                }
+            }
+            &__year__picker {
+                display: flex;
+                align-items: center;
+                &__year__change__pev__year {
+                    &:hover {
+                        background-color: $dark-hover;
+                    }
+                    // pre {}
+                }
+                // &__year {}
+                &__year__change__next__year {
+                    &:hover {
+                        background-color: $dark-hover;
+                    }
+                }
+            }
+        }
+        &__body {
+            &__week__day {
+                div {
+                    color: $dark-second;
+                }
+            }
+            &__days {
+                color: $dark-text;
+                span {
+                    position: absolute;
+                    &:nth-child(1),
+                    &:nth-child(3) {
+                        background-color: $dark-text;
+                    }
+                    &:nth-child(2),
+                    &:nth-child(4) {
+                        background-color: $dark-text;
+                    }
+                }
+            }
+        }
+        &__footer {
+            &__toggle {
+                span {
+                    color: $dark-text;
+                }
+                &__dark__mode__switch {
+                    background-color: $dark-second;
+                    &__ident {
+                        background-color: $dark-main;
+                        top: 2px;
+                        left: calc(1px + 50%);
+                    }
+                }
+            }
+        }
+        .month__list {
+            background-color: $dark-main;
+            color: $dark-text;
+            div {
+                div {
+                    &:hover {
+                        background-color: $dark-hover;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes to-top {
+    0% {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
